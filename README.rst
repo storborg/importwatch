@@ -4,7 +4,7 @@ importwatch - See what your code is importing, and when.
 
 :Authors:
     Scott Torborg (storborg)
-:Version: 0.1
+:Version: 0.2
 
 This library tracks module imports. That's it.
 
@@ -57,7 +57,7 @@ Do it like:
 License
 =======
 
-Packagetrack is released under the GNU General Public License (GPL). See the
+Importwatch is released under the GNU General Public License (GPL). See the
 LICENSE file for full text of the license.
 
 
