@@ -1,31 +1,30 @@
 import sys
 import re
 import logging
-import imp
+import __builtin__
 
 __version__ = '0.1'
 
 log = logging.getLogger(__name__)
 
+orig_import = __builtin__.__import__
 
-class ImportWatcher(object):
-    """
-    An instance of this class gets installed with PEP302-style import hooks to
-    monitor all module imports.
-    """
-    def __init__(self, regex=None):
-        if regex:
-            self.regex = re.compile(regex)
-        else:
-            self.regex = None
 
-    def find_module(self, fullname, path=None):
-        if (not self.regex) or self.regex.match(fullname):
-            log.info("'%s' imported." % fullname)
-
+def make_with_regex(regex=None):
+    if regex:
+        matcher = re.compile(regex)
+    else:
+        matcher = None
+    def new_import(name, *args, **kwargs):
+        if name not in sys.modules:
+            if (not matcher) or matcher.match(name):
+                log.info("'%s' imported.", name)
+        return orig_import(name, *args, **kwargs)
+    return new_import
+                
 
 def start(regex=None, echo=False):
-    sys.meta_path.insert(0, ImportWatcher(regex))
+    __builtin__.__import__ = make_with_regex(regex)
     if echo:
         console = logging.StreamHandler()
         console.setLevel(logging.DEBUG)
