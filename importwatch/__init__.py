@@ -3,7 +3,7 @@ import re
 import logging
 import __builtin__
 
-__version__ = '0.1'
+__version__ = '0.2'
 
 log = logging.getLogger(__name__)
 
